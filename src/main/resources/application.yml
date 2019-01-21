@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource 
+    jdbcUrl: jdbc:h2:file:./src/main/resources/h2/db;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    driverClassName: org.h2.Driver
+    hikari:
+       data-source-properties:
+           cachePrepStmts: true
+           prepStmtCacheSize: 50
+           prepStmtCacheSqlLimit: 2048
+           useServerPrepStmts: true
+  jpa:
+    show-sql: true
+    
+        
