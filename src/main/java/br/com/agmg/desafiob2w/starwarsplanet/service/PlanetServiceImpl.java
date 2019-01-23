@@ -1,16 +1,22 @@
 package br.com.agmg.desafiob2w.starwarsplanet.service;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import br.com.agmg.desafiob2w.starwarsplanet.entity.Planet;
+import br.com.agmg.desafiob2w.starwarsplanet.exception.GenericException;
+import br.com.agmg.desafiob2w.starwarsplanet.exception.IntegrationException;
 import br.com.agmg.desafiob2w.starwarsplanet.repository.PlanetRepository;
 
 /**
@@ -24,6 +30,8 @@ public class PlanetServiceImpl implements PlanetService {
 	@Autowired
 	private PlanetRepository planetRepository;
 
+	@Value("{starwarsapiplanet")
+	private String starWarsApiPlanetBaseUrl;
 	
 	
 	/**
@@ -62,14 +70,21 @@ public class PlanetServiceImpl implements PlanetService {
 
 	private int getNumberAppearence(String name) {
 
-		//StringBuffer url = new StringBuffer()
-		
-		RestTemplate rest = new RestTemplate();
-		
-		//Response response = rest.getForObject( "", Response.class); 
-		//log.info("==== RESTful API Response using Spring RESTTemplate START ======="); 
-		//log.info(response.toString()); 
-		//log.info("==== RESTful API Response using Spring RESTTemplate END =======");
+		try {
+			StringBuffer url = new StringBuffer(starWarsApiPlanetBaseUrl).append("?search=").append(name);
+			URI starWarsApiUri = new URI(url.toString());
+			
+			RestTemplate rest = new RestTemplate();
+			
+			String jsonResult = rest.getForObject(starWarsApiUri, String.class);
+			
+			
+			
+		} catch (RestClientException e) {
+			throw new IntegrationException(e.getMessage(), e);
+		} catch (URISyntaxException e) {
+			throw new GenericException(e);
+		}
 
 		
 		return 0;
