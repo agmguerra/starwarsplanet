@@ -37,20 +37,62 @@ public class Planet implements Serializable {
 	/**
 	 * nome do planeta
 	 */
-	@Column(name = "planet_name", nullable = false, length=100)
+	@Column(name = "planet_name", nullable = false, length=150)
 	private String name;
 
 	/**
 	 * clima do planeta
 	 */
-	@Column(name = "planet_climate", nullable = false, length=60)
+	@Column(name = "planet_climate", nullable = false, length=150)
 	private String climate;
 
 	/**
 	 * terreno do planeta
 	 */
-	@Column(name = "planet_terrain", nullable = false, length=60)
+	@Column(name = "planet_terrain", nullable = false, length=150)
 	private String terrain;
 
+	
+	private Integer numberOfMovieAppearence;
+	
+	public Long getId() {
+		return id;
+	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getClimate() {
+		return climate;
+	}
+
+	public void setClimate(String climate) {
+		this.climate = climate;
+	}
+
+	public String getTerrain() {
+		return terrain;
+	}
+
+	public void setTerrain(String terrain) {
+		this.terrain = terrain;
+	}
+
+	public Integer getNumberOfMovieAppearence() {
+		return numberOfMovieAppearence;
+	}
+
+	public void setNumberOfMovieAppearence(Integer numberOfMovieAppearence) {
+		this.numberOfMovieAppearence = numberOfMovieAppearence;
+	}
+	
 }

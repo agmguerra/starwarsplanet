@@ -13,5 +13,6 @@ spring:
            useServerPrepStmts: true
   jpa:
     show-sql: true
+  starwarsapiplanet: https://swapi.co/api/planets/
     
         
