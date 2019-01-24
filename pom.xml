@@ -66,11 +66,11 @@
 		</dependency>
 		
 		<dependency>
-		    <groupId>com.google.code.gson</groupId>
-		    <artifactId>gson</artifactId>
-		    <version>2.3.1</version>
-		</dependency>
-		
+		    <groupId>io.fastjson</groupId>
+		    <artifactId>boon</artifactId>
+		    <version>0.33</version>
+		</dependency>	
+			
 		<!-- Incluir suporte ao Actuator para minitorar os serviços -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

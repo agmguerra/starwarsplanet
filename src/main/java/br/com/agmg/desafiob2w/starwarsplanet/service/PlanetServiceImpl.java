@@ -3,8 +3,11 @@ package br.com.agmg.desafiob2w.starwarsplanet.service;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import org.boon.json.JsonFactory;
+import org.boon.json.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -61,15 +64,20 @@ public class PlanetServiceImpl implements PlanetService {
 		List<Planet> planets = planetRepository.findAll();
 		
 		for (Planet planet : planets) {
-			int num = getNumberAppearence(planet.getName());
+			int numAppereance = getNumberAppearence(planet.getName());
+			
+			planet.setNumberOfMovieAppearence(numAppereance);
 		}
 		
-		return planetRepository.findAll();
+		return planets;
 		
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private int getNumberAppearence(String name) {
-
+		
+		int numberOfFilms = 0;
+		
 		try {
 			StringBuffer url = new StringBuffer(starWarsApiPlanetBaseUrl).append("?search=").append(name);
 			URI starWarsApiUri = new URI(url.toString());
@@ -78,7 +86,19 @@ public class PlanetServiceImpl implements PlanetService {
 			
 			String jsonResult = rest.getForObject(starWarsApiUri, String.class);
 			
+			ObjectMapper mapper = JsonFactory.create();
+
+			Map jsonMap = mapper.readValue(jsonResult, Map.class);
+			List<Map> resultList = (List<Map>) jsonMap.get("results");
 			
+			if (resultList != null && resultList.size() > 0) {
+				
+				Map planetInfo = resultList.get(0);
+				List films = (List)planetInfo.get("films");
+				if (films != null) {
+					numberOfFilms = films.size();
+				}
+			}
 			
 		} catch (RestClientException e) {
 			throw new IntegrationException(e.getMessage(), e);
@@ -87,7 +107,7 @@ public class PlanetServiceImpl implements PlanetService {
 		}
 
 		
-		return 0;
+		return numberOfFilms;
 		
 
 	}
@@ -100,8 +120,15 @@ public class PlanetServiceImpl implements PlanetService {
 		
 		Pageable pageRequest = createOrderedPageRequestById(page, pageSize);		
 		
-		return planetRepository.findAll(pageRequest);
+		Page<Planet> planets = planetRepository.findAll(pageRequest);
+		
+		for (Planet planet : planets) {
+			int numAppereance = getNumberAppearence(planet.getName());
+			
+			planet.setNumberOfMovieAppearence(numAppereance);
+		}
 
+		return planets;
 	}
 
 	/**
@@ -110,13 +137,9 @@ public class PlanetServiceImpl implements PlanetService {
 	@Override
 	public Planet getById(Long id) {
 		
-		Optional<Planet> planet = planetRepository.findById(id);
+		Optional<Planet> planetResult = planetRepository.findById(id);
 		
-		if (planet.isPresent()) {
-			return planet.get();
-		} else {
-			return null;
-		}
+		return getPlanet(planetResult);
 		
 	}
 
@@ -126,14 +149,22 @@ public class PlanetServiceImpl implements PlanetService {
 	@Override
 	public Planet getByName(String name) {
 		
-		Optional<Planet> planet = planetRepository.findByName(name);
+		Optional<Planet> planetResult = planetRepository.findByName(name);
 		
-		if (planet.isPresent()) {
-			return planet.get();
+		return getPlanet(planetResult);
+		
+	}
+
+	private Planet getPlanet(Optional<Planet> planetResult) {
+		if (planetResult.isPresent()) {
+			Planet planet = planetResult.get();
+			int numAppereance = getNumberAppearence(planet.getName());
+			planet.setNumberOfMovieAppearence(numAppereance);
+			
+			return planet;
 		} else {
 			return null;
 		}
-		
 	}
 
 	/**
@@ -145,6 +176,7 @@ public class PlanetServiceImpl implements PlanetService {
 	private Pageable createOrderedPageRequestById(Integer page, Integer pageSize) {
 		return PageRequest.of(page, pageSize, new Sort(Sort.Direction.ASC, "id"));
 	}
-
+	
+	
 
 }
