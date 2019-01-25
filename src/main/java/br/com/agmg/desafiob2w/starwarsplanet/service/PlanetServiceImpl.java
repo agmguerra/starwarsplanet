@@ -6,10 +6,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.boon.json.JsonFactory;
 import org.boon.json.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +22,7 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import br.com.agmg.desafiob2w.starwarsplanet.entity.Planet;
+import br.com.agmg.desafiob2w.starwarsplanet.exception.AlreadyExistsException;
 import br.com.agmg.desafiob2w.starwarsplanet.exception.GenericException;
 import br.com.agmg.desafiob2w.starwarsplanet.exception.IntegrationException;
 import br.com.agmg.desafiob2w.starwarsplanet.repository.PlanetRepository;
@@ -28,14 +33,18 @@ import br.com.agmg.desafiob2w.starwarsplanet.repository.PlanetRepository;
  *
  */
 public class PlanetServiceImpl implements PlanetService {
-	
-	
+		
 	@Autowired
 	private PlanetRepository planetRepository;
 
 	@Value("{starwarsapiplanet")
 	private String starWarsApiPlanetBaseUrl;
 	
+	@Autowired
+	private MessageSource messageSource;
+	
+	@Autowired
+	private HttpServletRequest request;
 	
 	/**
 	 * @see br.com.agmg.desafiob2w.starwarsplanet.service.PlanetService#savePlanet(Planet)
@@ -43,7 +52,16 @@ public class PlanetServiceImpl implements PlanetService {
 	@Override
 	public Planet savePlanet(Planet planet) {
 		
-		return planetRepository.save(planet);
+		Planet planetSaved = null;
+		try {
+			planetSaved = planetRepository.save(planet);
+		} catch (DataIntegrityViolationException die) {
+			throw new AlreadyExistsException(messageSource.getMessage("error.planet.already.exists.message", null, request.getLocale()));
+	    } catch (Exception e) {
+			throw new GenericException(messageSource.getMessage("error.generic.message", null, request.getLocale()), e);
+		}
+		
+		return planetSaved;
 
 	}
 	
@@ -52,7 +70,12 @@ public class PlanetServiceImpl implements PlanetService {
 	 */
 	@Override
 	public void deletePlanet(Long id) {
-		planetRepository.deleteById(id);
+	
+		try {
+			planetRepository.deleteById(id);
+		} catch (Exception e) {
+			throw new GenericException(messageSource.getMessage("error.planet.invalid.delete", null, request.getLocale()), e);
+		}
 	}
 
 	/**
@@ -101,9 +124,9 @@ public class PlanetServiceImpl implements PlanetService {
 			}
 			
 		} catch (RestClientException e) {
-			throw new IntegrationException(e.getMessage(), e);
+			throw new IntegrationException(messageSource.getMessage("error.planet.invalid.number.appearence", null, request.getLocale()), e);
 		} catch (URISyntaxException e) {
-			throw new GenericException(e);
+			throw new GenericException(messageSource.getMessage("error.planet.invalid.number.appearence", null, request.getLocale()), e);
 		}
 
 		
@@ -137,7 +160,12 @@ public class PlanetServiceImpl implements PlanetService {
 	@Override
 	public Planet getById(Long id) {
 		
-		Optional<Planet> planetResult = planetRepository.findById(id);
+		Optional<Planet> planetResult = null;
+		try {
+			planetResult = planetRepository.findById(id);
+		} catch (Exception e) {
+			throw new GenericException(messageSource.getMessage("error.planet.not.found", null, request.getLocale()), e);
+		}
 		
 		return getPlanet(planetResult);
 		
@@ -149,7 +177,12 @@ public class PlanetServiceImpl implements PlanetService {
 	@Override
 	public Planet getByName(String name) {
 		
-		Optional<Planet> planetResult = planetRepository.findByName(name);
+		Optional<Planet> planetResult = null;
+		try {
+			planetResult = planetRepository.findByName(name);
+		} catch (Exception e) {
+			throw new GenericException(messageSource.getMessage("error.planet.not.found", null, request.getLocale()), e);
+		}
 		
 		return getPlanet(planetResult);
 		

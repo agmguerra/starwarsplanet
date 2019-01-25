@@ -1,5 +1,10 @@
 package br.com.agmg.desafiob2w.starwarsplanet.exception;
 
+/**
+ * 
+ * @author guerra
+ *
+ */
 public class IntegrationException extends GenericException {
 
 	/**

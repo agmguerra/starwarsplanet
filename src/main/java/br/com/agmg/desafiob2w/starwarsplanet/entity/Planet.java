@@ -37,7 +37,7 @@ public class Planet implements Serializable {
 	/**
 	 * nome do planeta
 	 */
-	@Column(name = "planet_name", nullable = false, length=150)
+	@Column(name = "planet_name", unique = true, nullable = false, length=150)
 	private String name;
 
 	/**
