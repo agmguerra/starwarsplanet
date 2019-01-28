@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @Configuration
 @EnableAutoConfiguration
-@EnableJpaRepositories(basePackages={"br.com.agmg.desafiob2w.starwarsplanetrepositorio"})
+@EnableJpaRepositories(basePackages={"br.com.agmg.desafiob2w.starwarsplanet.repository"})
 @EnableTransactionManagement
 public class RepositoryConfiguration {
 

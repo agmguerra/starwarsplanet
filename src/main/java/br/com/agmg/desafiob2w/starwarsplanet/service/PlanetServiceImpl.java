@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -27,11 +28,13 @@ import br.com.agmg.desafiob2w.starwarsplanet.exception.GenericException;
 import br.com.agmg.desafiob2w.starwarsplanet.exception.IntegrationException;
 import br.com.agmg.desafiob2w.starwarsplanet.repository.PlanetRepository;
 
+
 /**
  * 
  * @author alexgmg
  *
  */
+@Service
 public class PlanetServiceImpl implements PlanetService {
 		
 	@Autowired
@@ -58,7 +61,7 @@ public class PlanetServiceImpl implements PlanetService {
 		} catch (DataIntegrityViolationException die) {
 			throw new AlreadyExistsException(messageSource.getMessage("error.planet.already.exists.message", null, request.getLocale()));
 	    } catch (Exception e) {
-			throw new GenericException(messageSource.getMessage("error.generic.message", null, request.getLocale()), e);
+			throw new GenericException("error.generic.message");
 		}
 		
 		return planetSaved;
@@ -74,7 +77,7 @@ public class PlanetServiceImpl implements PlanetService {
 		try {
 			planetRepository.deleteById(id);
 		} catch (Exception e) {
-			throw new GenericException(messageSource.getMessage("error.planet.invalid.delete", null, request.getLocale()), e);
+			throw new GenericException("error.planet.invalid.delete");
 		}
 	}
 
@@ -124,9 +127,9 @@ public class PlanetServiceImpl implements PlanetService {
 			}
 			
 		} catch (RestClientException e) {
-			throw new IntegrationException(messageSource.getMessage("error.planet.invalid.number.appearence", null, request.getLocale()), e);
+			throw new IntegrationException("error.planet.invalid.number.appearence");
 		} catch (URISyntaxException e) {
-			throw new GenericException(messageSource.getMessage("error.planet.invalid.number.appearence", null, request.getLocale()), e);
+			throw new GenericException("error.planet.invalid.number.appearence");
 		}
 
 		
@@ -164,7 +167,7 @@ public class PlanetServiceImpl implements PlanetService {
 		try {
 			planetResult = planetRepository.findById(id);
 		} catch (Exception e) {
-			throw new GenericException(messageSource.getMessage("error.planet.not.found", null, request.getLocale()), e);
+			throw new GenericException("error.planet.not.found");
 		}
 		
 		return getPlanet(planetResult);
@@ -181,7 +184,7 @@ public class PlanetServiceImpl implements PlanetService {
 		try {
 			planetResult = planetRepository.findByName(name);
 		} catch (Exception e) {
-			throw new GenericException(messageSource.getMessage("error.planet.not.found", null, request.getLocale()), e);
+			throw new GenericException("error.planet.not.found");
 		}
 		
 		return getPlanet(planetResult);

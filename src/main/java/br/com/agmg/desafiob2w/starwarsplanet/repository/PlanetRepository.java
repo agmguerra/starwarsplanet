@@ -14,7 +14,7 @@ import br.com.agmg.desafiob2w.starwarsplanet.entity.Planet;
  * @author alexgmg
  *
  */
-@RepositoryRestResource(exported = false)
+@RepositoryRestResource(exported = false, collectionResourceRel = "planets")
 public interface PlanetRepository extends JpaRepository<Planet, Long> {
 		
 	Optional<Planet> findByName(String name);
