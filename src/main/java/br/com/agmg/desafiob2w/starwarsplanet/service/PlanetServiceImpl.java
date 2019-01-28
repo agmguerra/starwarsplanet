@@ -1,7 +1,6 @@
 package br.com.agmg.desafiob2w.starwarsplanet.service;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -40,7 +39,7 @@ public class PlanetServiceImpl implements PlanetService {
 	@Autowired
 	private PlanetRepository planetRepository;
 
-	@Value("{starwarsapiplanet")
+	@Value("${spring.starwarsapiplanet}")
 	private String starWarsApiPlanetBaseUrl;
 	
 	@Autowired
@@ -105,8 +104,11 @@ public class PlanetServiceImpl implements PlanetService {
 		int numberOfFilms = 0;
 		
 		try {
-			StringBuffer url = new StringBuffer(starWarsApiPlanetBaseUrl).append("?search=").append(name);
-			URI starWarsApiUri = new URI(url.toString());
+			StringBuffer url = new StringBuffer(starWarsApiPlanetBaseUrl).append("?search=").append(name.replace(' ', '+'));
+			//String encodedUrl = URLEncoder.encode(url.toString(), "UTF-8");
+			//URI starWarsApiUri = new URI(url.toString());
+			URI starWarsApiUri = new URI("https://swapi.co/api/planets/?search=Yavin+IV");
+			
 			
 			RestTemplate rest = new RestTemplate();
 			
@@ -128,7 +130,7 @@ public class PlanetServiceImpl implements PlanetService {
 			
 		} catch (RestClientException e) {
 			throw new IntegrationException("error.planet.invalid.number.appearence");
-		} catch (URISyntaxException e) {
+		} catch (Exception e) {
 			throw new GenericException("error.planet.invalid.number.appearence");
 		}
 
