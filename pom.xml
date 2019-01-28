@@ -68,6 +68,11 @@
 		    <version>0.33</version>
 		</dependency>	
 			
+		<dependency>
+		    <groupId>org.apache.httpcomponents</groupId>
+		    <artifactId>httpclient</artifactId>
+		</dependency>			
+			
 		<!-- Incluir suporte ao Actuator para minitorar os serviços -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
