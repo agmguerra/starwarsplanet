@@ -5,18 +5,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.boon.json.JsonFactory;
 import org.boon.json.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -26,6 +24,7 @@ import br.com.agmg.desafiob2w.starwarsplanet.exception.AlreadyExistsException;
 import br.com.agmg.desafiob2w.starwarsplanet.exception.GenericException;
 import br.com.agmg.desafiob2w.starwarsplanet.exception.IntegrationException;
 import br.com.agmg.desafiob2w.starwarsplanet.repository.PlanetRepository;
+import br.com.agmg.desafiob2w.starwarsplanet.util.RestUtil;
 
 
 /**
@@ -34,7 +33,7 @@ import br.com.agmg.desafiob2w.starwarsplanet.repository.PlanetRepository;
  *
  */
 @Service
-public class PlanetServiceImpl implements PlanetService {
+public class PlanetServiceImpl extends BaseService implements PlanetService {
 		
 	@Autowired
 	private PlanetRepository planetRepository;
@@ -42,11 +41,6 @@ public class PlanetServiceImpl implements PlanetService {
 	@Value("${spring.starwarsapiplanet}")
 	private String starWarsApiPlanetBaseUrl;
 	
-	@Autowired
-	private MessageSource messageSource;
-	
-	@Autowired
-	private HttpServletRequest request;
 	
 	/**
 	 * @see br.com.agmg.desafiob2w.starwarsplanet.service.PlanetService#savePlanet(Planet)
@@ -58,7 +52,7 @@ public class PlanetServiceImpl implements PlanetService {
 		try {
 			planetSaved = planetRepository.save(planet);
 		} catch (DataIntegrityViolationException die) {
-			throw new AlreadyExistsException(messageSource.getMessage("error.planet.already.exists.message", null, request.getLocale()));
+			throw new AlreadyExistsException(getMessageSource().getMessage("error.planet.already.exists.message", null, getRequest().getLocale()));
 	    } catch (Exception e) {
 			throw new GenericException("error.generic.message");
 		}
@@ -105,28 +99,36 @@ public class PlanetServiceImpl implements PlanetService {
 		
 		try {
 			StringBuffer url = new StringBuffer(starWarsApiPlanetBaseUrl).append("?search=").append(name.replace(' ', '+'));
-			//String encodedUrl = URLEncoder.encode(url.toString(), "UTF-8");
-			//URI starWarsApiUri = new URI(url.toString());
-			URI starWarsApiUri = new URI("https://swapi.co/api/planets/?search=Yavin+IV");
+			URI starWarsApiUri = new URI(url.toString());
 			
 			
-			RestTemplate rest = new RestTemplate();
+			RestTemplate rest = createRestTemplate();
 			
-			String jsonResult = rest.getForObject(starWarsApiUri, String.class);
-			
-			ObjectMapper mapper = JsonFactory.create();
 
-			Map jsonMap = mapper.readValue(jsonResult, Map.class);
-			List<Map> resultList = (List<Map>) jsonMap.get("results");
+			ResponseEntity<String> resp = rest.getForEntity(starWarsApiUri, String.class);
 			
-			if (resultList != null && resultList.size() > 0) {
+			if (!RestUtil.isError(resp.getStatusCode())) {
 				
-				Map planetInfo = resultList.get(0);
-				List films = (List)planetInfo.get("films");
-				if (films != null) {
-					numberOfFilms = films.size();
+				String jsonResult = resp.getBody();
+				ObjectMapper mapper = JsonFactory.create();
+
+				Map jsonMap = mapper.readValue(jsonResult, Map.class);
+				List<Map> resultList = (List<Map>) jsonMap.get("results");
+				
+				if (resultList != null && resultList.size() > 0) {
+					
+					Map planetInfo = resultList.get(0);
+					List films = (List)planetInfo.get("films");
+					if (films != null) {
+						numberOfFilms = films.size();
+					}
 				}
-			}
+				
+				
+			} else {
+				throw new IntegrationException("error.planet.invalid.number.appearence");
+			} 
+			
 			
 		} catch (RestClientException e) {
 			throw new IntegrationException("error.planet.invalid.number.appearence");

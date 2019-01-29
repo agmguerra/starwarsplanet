@@ -46,7 +46,9 @@ public class PlanetServiceTests {
 
     Planet planetWithoutId = null;
     Planet planet = null;
+    Planet planet2 = null;
     List<Planet> planets = null;
+    
 
 	@Before
 	public void preparaTestes() {
@@ -62,15 +64,11 @@ public class PlanetServiceTests {
 		planet.setTerrain("terrain 1");
 		planet.setClimate("climate 1");
 		
-		Planet planet2 = new Planet();
-		planet = new Planet();
-		planet.setId(1000L);
-		planet.setName("planet 2");
-		planet.setTerrain("terrain 2");
-		planet.setClimate("climate 2");
-
-		
-		//Planet[] array = {planet, planet2};
+		planet2 = new Planet();
+		planet2.setId(1000L);
+		planet2.setName("planet 2");
+		planet2.setTerrain("terrain 2");
+		planet2.setClimate("climate 2");
 		
 		planets = Arrays.asList(planet, planet2);
 		
@@ -88,21 +86,18 @@ public class PlanetServiceTests {
 	
 	@Test
 	public void testSavePlanetOk() {
-				
 		Planet planetSaved = planetService.savePlanet(planetWithoutId);	
 		assertNotNull(planetSaved);
-		assertEquals(planet.getId(), planetSaved.getId());
-					
+		assertEquals(planet.getId(), planetSaved.getId());			
 	}
 	
 	@Test
 	public void testFindPlanetById() {
-		
-		Planet planetRet = planetService.getById(planet.getId());
 	
-		assertNotNull(planetRet);
+		Planet planetRet = planetService.getById(planet.getId());	
+		assertNotNull(planetRet);		
 	}
-	
+		
 	@Test
 	public void testFindPlanetByName() {
 		

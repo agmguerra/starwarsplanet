@@ -2,8 +2,12 @@ package br.com.agmg.desafiob2w.starwarsplanet.service;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import br.com.agmg.desafiob2w.starwarsplanet.exception.RestResponseErrorHandler;
@@ -60,7 +64,11 @@ public abstract class BaseService {
 	 * @return RestTemplate
 	 */
 	protected RestTemplate createRestTemplate() {
-		RestTemplate rest = new RestTemplate();
+		CloseableHttpClient httpClient = HttpClients.custom().setSSLHostnameVerifier(new NoopHostnameVerifier()).build();
+		HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+		requestFactory.setHttpClient(httpClient);		
+		RestTemplate rest = new RestTemplate(requestFactory);
+		
 		rest.setErrorHandler(restResponseErrorHandler);
 		
 		return rest;

@@ -71,7 +71,11 @@
 		<dependency>
 		    <groupId>org.apache.httpcomponents</groupId>
 		    <artifactId>httpclient</artifactId>
-		</dependency>			
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.httpcomponents</groupId>
+		    <artifactId>httpcore</artifactId>
+		</dependency>		
 			
 		<!-- Incluir suporte ao Actuator para minitorar os serviços -->
 		<dependency>
