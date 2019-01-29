@@ -60,5 +60,15 @@ public class CustomizedResponseExceptionHandler extends ResponseEntityExceptionH
 		return new ResponseEntity<Object>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
+	@ExceptionHandler(GenericException.class)
+	public final ResponseEntity<Object> handleGenericException(GenericException ex, WebRequest request) {
+				
+		StatusResponse exceptionResponse = 
+				new StatusResponse(HttpStatus.INTERNAL_SERVER_ERROR, new Date(), messageSource.getMessage(ex.getMessage(),
+						null, request.getLocale()), request.getDescription(false));
+		
+		return new ResponseEntity<Object>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
 			
 }

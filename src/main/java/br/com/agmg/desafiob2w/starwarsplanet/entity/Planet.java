@@ -8,15 +8,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import io.swagger.annotations.ApiModel;
 
 
 
 /**
- * Classe que representa o cartão
+ * Classe que representa o planeta
  * 
- * @author alexgmg
  *
  */
 @ApiModel(description="Contém informações de planetas mencionados na saga Star Wars")
@@ -52,7 +52,10 @@ public class Planet implements Serializable {
 	@Column(name = "planet_terrain", nullable = false, length=150)
 	private String terrain;
 
-	
+	/**
+	 * número de aparições do planeta em filmes
+	 */
+	@Transient
 	private Integer numberOfMovieAppearence;
 	
 	

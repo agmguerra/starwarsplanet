@@ -9,6 +9,10 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
+/**
+ * Classe principal da aplicação
+ *
+ */
 @SpringBootApplication
 public class StarwarsplanetApplication {
 
