@@ -15,7 +15,7 @@ import javax.validation.Payload;
 @Constraint(validatedBy = PlanetValidator.class)
 public @interface ValidPlanet {
 	
-	String message() default "{erro.planet.invalido}";
+	String message() default "{error.planet.invalid}";
 	Class<?>[] groups() default {};
 	Class<? extends Payload>[] payload() default {};
 	

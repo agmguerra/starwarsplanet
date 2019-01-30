@@ -21,7 +21,7 @@ public class PlanetValidator implements ConstraintValidator<ValidPlanet, Planet>
 		boolean ret = true;
 		if (planet == null) {
 			ctx.disableDefaultConstraintViolation();
-	        ctx.buildConstraintViolationWithTemplate("{erro.planet.invalid}")
+	        ctx.buildConstraintViolationWithTemplate("{error.planet.invalid}")
 	           .addConstraintViolation();
 
 			ret = false;
@@ -29,7 +29,7 @@ public class PlanetValidator implements ConstraintValidator<ValidPlanet, Planet>
 			
 			if (planet.getName() == null || planet.getName().isEmpty()) {
 				ctx.disableDefaultConstraintViolation();
-		        ctx.buildConstraintViolationWithTemplate("{erro.planet.invalid.name}")
+		        ctx.buildConstraintViolationWithTemplate("{error.planet.invalid.name}")
 		           .addConstraintViolation();
 	
 				ret = false;			
@@ -37,13 +37,13 @@ public class PlanetValidator implements ConstraintValidator<ValidPlanet, Planet>
 			
 			if (planet.getClimate() == null || planet.getClimate().isEmpty()) {
 				ctx.disableDefaultConstraintViolation();
-		        ctx.buildConstraintViolationWithTemplate("{erro.cliente.tipo-documento.invalido.mensagem}")
+		        ctx.buildConstraintViolationWithTemplate("{error.planet.invalid.climate}")
 		           .addConstraintViolation();
 	
 				ret = false;
 			} else if (planet.getTerrain() == null || planet.getTerrain().isEmpty()) {
 				ctx.disableDefaultConstraintViolation();
-		        ctx.buildConstraintViolationWithTemplate("{erro.cliente.documento.invalido.mensagem}")
+		        ctx.buildConstraintViolationWithTemplate("{error.planet.invalid.terrain}")
 		           .addConstraintViolation();
 				
 		        ret = false;							

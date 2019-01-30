@@ -2,14 +2,12 @@ package br.com.agmg.desafiob2w.starwarsplanet.resource;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.hateoas.Resource;
-import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import br.com.agmg.desafiob2w.starwarsplanet.dto.PlanetDto;
+import br.com.agmg.desafiob2w.starwarsplanet.dto.PlanetsDto;
 import br.com.agmg.desafiob2w.starwarsplanet.entity.Planet;
 import br.com.agmg.desafiob2w.starwarsplanet.exception.NotFoundException;
 import br.com.agmg.desafiob2w.starwarsplanet.service.PlanetService;
@@ -28,18 +28,19 @@ import br.com.agmg.desafiob2w.starwarsplanet.service.PlanetService;
 @RestController
 public class PlanetResource {
 	
-	
+	@Autowired
+	private HttpServletRequest request;
 	
 	@Autowired
 	private PlanetService planetService;
 
 	/**
-	 * 
+	 * Cadastra informações de um planeta
 	 * @param planet
 	 * @return
 	 */
 	@PostMapping("/api/planets")
-	public ResponseEntity<Object> createPlanet(@Valid @RequestBody Planet planet) {
+	public ResponseEntity<Object> savePlanet(@Valid @RequestBody Planet planet) {
 		
 		Planet planetSaved = planetService.savePlanet(planet);
 		
@@ -61,42 +62,50 @@ public class PlanetResource {
 	 * @param response
 	 * @return
 	 */
-	@GetMapping(params = { "page", "size" }, path="/api/planets")
-	public ResponseEntity<Resources<Resource<Planet>>> getAllPlanets(@RequestParam Integer page, @RequestParam Integer pageSize) {
+	@GetMapping(params = {"page"}, path="/api/planets")
+	public ResponseEntity<PlanetsDto> getAllPlanets(@RequestParam Integer page) {
 		
 		List<Planet> planets = null;
 		
-		if (page == null || page == 0) {
-			planets = planetService.getAll();
-		} else {
-			Page<Planet> pageResult = planetService.getAll(page, pageSize);
-			if (page > pageResult.getTotalPages()) {
-				throw new NotFoundException("error.planet.not.found");
-			}
-			planets = pageResult.getContent();
+		Page<Planet> pageResult = planetService.getAll(page - 1, 10);
+		if (page > pageResult.getTotalPages()) {
+			throw new NotFoundException("error.planet.not.found");
 		}
+		planets = pageResult.getContent();
+		PlanetsDto planetsDto = new PlanetsDto(planets, request.getRequestURL().toString(), page, 10);
 
-		List<Resource<Planet>> resourcesList = planets.stream().map(planet -> new Resource<Planet>(planet)).collect(Collectors.toList());
-		Resources<Resource<Planet>> resources = new Resources<Resource<Planet>>(resourcesList);
-		return ResponseEntity.ok(resources);
+		return ResponseEntity.ok(planetsDto);
 	}
 	
 	/**
-	 * 
+	 * Recupera informações de todos os planetas
 	 * @return
 	 */
-	public ResponseEntity<Resources<Resource<Planet>>> getAllPlanets() { 
+	@GetMapping("/api/planets")
+	public ResponseEntity<PlanetsDto> getAllPlanets() { 
 		List<Planet> planets = planetService.getAll();
-		List<Resource<Planet>> resourcesList = planets.stream().map(planet -> new Resource<Planet>(planet)).collect(Collectors.toList());
 		
-		Resources<Resource<Planet>> resources = new Resources<Resource<Planet>>(resourcesList);
-
-		return ResponseEntity.ok(resources);
+		PlanetsDto planetsDto = new PlanetsDto(planets, request.getRequestURL().toString());
+				
+		return ResponseEntity.ok(planetsDto);
 	}
 	
+	/**
+	 * Recupera informações do planeta do id informado
+	 * @return
+	 */
+	@GetMapping("/api/planets/{id}")
+	public ResponseEntity<PlanetDto> getById(@PathVariable Long id) { 
+		Planet planet = planetService.getById(id);
+		
+		PlanetDto planetDto = new PlanetDto(planet, request.getRequestURL().toString());
+		
+		return ResponseEntity.ok(planetDto);
+	}
+
 	
 	/**
-	 * 
+	 * Exclui o planeta com o id informado
 	 * @param id
 	 */
 	@DeleteMapping("/api/planets/{id}")

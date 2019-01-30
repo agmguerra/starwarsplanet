@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import br.com.agmg.desafiob2w.starwarsplanet.exception.IntegrationException;
 import br.com.agmg.desafiob2w.starwarsplanet.util.RestUtil;
 
 /**
@@ -62,12 +61,13 @@ public class StarwarsApiServiceImpl extends BaseService implements StarwarsApiSe
 				
 				
 			} else {
-				throw new IntegrationException("error.planet.invalid.number.appearence");
+				return -1;
 			} 
 			
 			
 		} catch (Exception e) {
-			throw new IntegrationException("error.planet.invalid.number.appearence");
+			e.printStackTrace();
+			return -1;
 		}
 		
 		return numberOfFilms;

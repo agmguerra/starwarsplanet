@@ -49,7 +49,7 @@ public class RepositoryConfiguration {
         registrationBean.addUrlMappings("/console/*");
         return registrationBean;
     }
-    
+      
     @Configuration
     public class PersistenceHibernateConfig {
        @Bean

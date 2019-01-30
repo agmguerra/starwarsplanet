@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import br.com.agmg.desafiob2w.starwarsplanet.validadores.ValidPlanet;
 import io.swagger.annotations.ApiModel;
 
 
@@ -22,6 +23,7 @@ import io.swagger.annotations.ApiModel;
 @ApiModel(description="Contém informações de planetas mencionados na saga Star Wars")
 @Entity
 @Table(name = "planet")
+@ValidPlanet
 public class Planet implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -31,25 +33,25 @@ public class Planet implements Serializable {
 	 */
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "planet_id", unique = true, nullable = false)
+	@Column(name = "ID", unique = true, nullable = false)
 	private Long id;
 
 	/**
 	 * nome do planeta
 	 */
-	@Column(name = "planet_name", unique = true, nullable = false, length=150)
+	@Column(name = "NAME", unique = true, nullable = false, length=150)
 	private String name;
 
 	/**
 	 * clima do planeta
 	 */
-	@Column(name = "planet_climate", nullable = false, length=150)
+	@Column(name = "CLIMATE", nullable = false, length=150)
 	private String climate;
 
 	/**
 	 * terreno do planeta
 	 */
-	@Column(name = "planet_terrain", nullable = false, length=150)
+	@Column(name = "TERRAIN", nullable = false, length=150)
 	private String terrain;
 
 	/**
