@@ -65,7 +65,14 @@ public class PlanetServiceImpl extends BaseService implements PlanetService {
 	public void deletePlanet(Long id) {
 	
 		try {
-			planetRepository.deleteById(id);
+			if (planetRepository.existsById(id)) {
+				planetRepository.deleteById(id);
+			} else {
+				throw new NotFoundException("error.planet.not.found");
+			}
+		} catch (GenericException e) {
+			e.printStackTrace();
+			throw e;		
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new GenericException("error.planet.invalid.delete", e);

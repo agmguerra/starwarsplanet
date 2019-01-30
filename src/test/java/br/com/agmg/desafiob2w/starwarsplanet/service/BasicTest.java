@@ -1,4 +1,4 @@
-package br.com.agmg.desafiob2w.starwarsplanet.seervice;
+package br.com.agmg.desafiob2w.starwarsplanet.service;
 
 
 import java.net.URI;
