@@ -2,11 +2,35 @@
 	"info": {
 		"_postman_id": "12bbda48-ba40-436a-b917-c7351ba4e7bf",
 		"name": "Desafio B2W",
+		"description": "Testes básicos para a api REST ",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "obtem todos os planetas",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ce594eaa-62ee-47d2-b416-01d8fabab654",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Body part matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include('\"count\":2');",
+							"    pm.expect(pm.response.text()).to.include('\"id\":3,\"name\":\"PLANETA 3\"');",
+							"    pm.expect(pm.response.text()).to.include('\"id\":4,\"name\":\"Yavin IV\"');",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -30,6 +54,30 @@
 		},
 		{
 			"name": "todos os planetas com paginacao",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a6d2d4d3-c2ff-4417-a202-8d0d0a8e2d56",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Body part matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include('\"count\":2');",
+							"    pm.expect(pm.response.text()).to.include('next\":\"http://localhost:8080/api/planets?page=1\"');",
+							"    pm.expect(pm.response.text()).to.include('\"id\":3,\"name\":\"PLANETA 3\"');",
+							"    pm.expect(pm.response.text()).to.include('\"id\":4,\"name\":\"Yavin IV\"');",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -59,6 +107,25 @@
 		},
 		{
 			"name": "get de um planeta",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "69074850-a5fb-4444-8e65-299d9d0b0232",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body part matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include('id\":3,\"name\": \"PLANETA 3\"');",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -82,7 +149,64 @@
 			"response": []
 		},
 		{
+			"name": "get de um planeta que não existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "cdf49ce1-36cc-42de-aff4-7122c5accbf7",
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include('\"messages\":[\"Planeta(s) não encontrado(s)\"]');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/api/planets/10",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"planets",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Exclui um planeta",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "e0907df1-9a62-4444-97cb-c4c0c6cb4c71",
+						"exec": [
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -106,7 +230,69 @@
 			"response": []
 		},
 		{
+			"name": "Exclui um planeta que não existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "aee31f87-8e43-42a2-b68f-d5ae399ef918",
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Body part matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include('\"messages\":[\"Planeta(s) não encontrado(s)\"]');",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/api/planets/10",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"planets",
+						"10"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Inclui um planeta",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "db7e3f40-044d-445e-9e68-30209da28e09",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Content-Type is present\", function () {",
+							"    pm.response.to.have.header(\"Location\");",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [
@@ -118,7 +304,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n   \"name\": \"Planeta D\",\n   \"climate\": \"Climate D\",\n   \"terrain\": \"Terrain D\"\n}"
+					"raw": "{\n   \"name\": \"Planeta S\",\n   \"climate\": \"Climate D\",\n   \"terrain\": \"Terrain D\"\n}"
 				},
 				"url": {
 					"raw": "localhost:8080/api/planets",
@@ -133,6 +319,74 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Inclui um planeta que já existe",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5c037025-41d6-4cf6-a747-f58d96a5cb65",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(500);",
+							"});",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include('\"messages\":[\"Planeta com o id ou nome informado já existe\"]');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"name\": \"Yavin IV\",\n   \"climate\": \"Climate D\",\n   \"terrain\": \"Terrain D\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/api/planets",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"planets"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "a3b2f567-599d-488c-8d77-5551f6bbbd41",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "3f41829d-c4c9-46eb-9dd8-e68aca8f7e36",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }

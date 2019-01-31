@@ -112,3 +112,12 @@ INSERT INTO PLANET(ID, NAME, CLIMATE, TERRAIN) VALUES(4, 'Yavin IV', 'temperate,
 
 ```
 
+
+
+### Testes
+
+Foi incluído no projeto o arquivo "Desafio B2W.postman_collection.json". Este arquivo poderá ser utilizado para realização de testes da api através do software Postman (https://www.getpostman.com/). Para executar a sequência de testes deve sempre reiniciar a aplicação (mvn spring-boot:run)
+
+
+
+![](C:\Users\guerra\git\starwarsplanet\images\postman.png)
