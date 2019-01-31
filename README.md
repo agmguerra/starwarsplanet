@@ -89,16 +89,14 @@ A documentação (resumida) da api rest implementada pelo projeto pode ser consu
 **Executando os projetos**
 --------------------------
 
-Para executar os projetos podem ser utilizados os seguintes comandos, após
+Para executar o projeto pode ser utilizado o seguinte comando, após
 baixar o zip do projeto.
 
 1.  Ir para o diretório específico da aplicação
 
 2.  Executar o comando: mvn spring-boot:run
 
-3.  Os dois projetos deve estar iniciados.
-
-4.  A url é: http://localhost:8080/api/planets
+3.  A url é: http://localhost:8080/api/planets
 
  
 
