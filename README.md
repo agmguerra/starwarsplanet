@@ -36,7 +36,7 @@ As classes do diagrama abaixo representam o modelo de domínio básico definido 
 
 ### **Controladores**
 
-No projeto starwarsplanet os controladores são implementados através da classe:
+No projeto starwarsplanet o controlador foi implementado através da classe:
 
 
 
@@ -65,6 +65,12 @@ No projeto definiu-se uma classe abstrata BaseService.java que implementa alguns
 A camada de persistência do projeto foi implementada através do Spring Data JPA. As interfaces anotadas com @Repository definem as operações necessárias.
 
  
+
+### Segurança
+
+Requisitos de segurança foram desconsiderados para esse projeto.
+
+
 
 **Documentação da Api REST.**
 -----------------------------
@@ -102,5 +108,7 @@ baixar o zip do projeto.
 
 ```sql
 INSERT INTO PLANET(ID, NAME, CLIMATE, TERRAIN) VALUES(3, 'PLANETA 3', 'CLIMATE 3', 'TERRAIN 3');
+INSERT INTO PLANET(ID, NAME, CLIMATE, TERRAIN) VALUES(4, 'Yavin IV', 'temperate, tropical', 'jungle, rainforests');
+
 ```
 

@@ -6,7 +6,11 @@ import org.springframework.data.domain.Page;
 
 import br.com.agmg.desafiob2w.starwarsplanet.entity.Planet;
 
-
+/**
+ * 
+ * Interface da classe de serviços de negócio ralacionados a planeta
+ *
+ */
 public interface PlanetService {
 	
 	/**

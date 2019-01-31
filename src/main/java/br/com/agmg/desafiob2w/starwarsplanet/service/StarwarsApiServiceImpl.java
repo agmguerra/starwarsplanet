@@ -15,7 +15,7 @@ import br.com.agmg.desafiob2w.starwarsplanet.util.RestUtil;
 
 /**
  * 
- * @author guerra
+ * Implementação associada aos serviços que recuperam info na api starwars.co
  *
  */
 @Service

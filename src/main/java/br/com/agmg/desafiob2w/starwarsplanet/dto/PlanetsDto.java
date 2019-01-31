@@ -25,6 +25,9 @@ public class PlanetsDto {
 	private String previus = null;
 	
 	private List<PlanetDto> planets;
+	
+	
+	private static final String PAGE_CONCAT_PART = "?page=";
 
 	public PlanetsDto(List<Planet> planets, String baseUrl) {
 		
@@ -38,8 +41,8 @@ public class PlanetsDto {
 		
 		this.count = planets.size();		
 		this.planets = planets.stream().map(planet -> new PlanetDto(planet, baseUrl + "/" + planet.getId())).collect(Collectors.toList());
-		this.previus = baseUrl + "?page=" + RestUtil.getPreviusPage(page);
-		this.next = baseUrl + "?page=" + RestUtil.getNextPage(page, totalPages);
+		this.previus = baseUrl + PAGE_CONCAT_PART + RestUtil.getPreviusPage(page);
+		this.next = baseUrl + PAGE_CONCAT_PART + RestUtil.getNextPage(page, totalPages);
 		
 	}
 

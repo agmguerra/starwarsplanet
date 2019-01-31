@@ -2,7 +2,7 @@ package br.com.agmg.desafiob2w.starwarsplanet.service;
 
 /**
  * 
- * @author guerra
+ * Interface associada aos serviços que recuperam info na api starwars.co
  *
  */
 public interface StarwarsApiService {

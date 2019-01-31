@@ -21,7 +21,7 @@ import br.com.agmg.desafiob2w.starwarsplanet.repository.PlanetRepository;
 
 /**
  * 
- * @author alexgmg
+ * Implementação da classe de serviços de negócio ralacionados a planeta
  *
  */
 @Service
@@ -37,6 +37,12 @@ public class PlanetServiceImpl extends BaseService implements PlanetService {
 	private String starWarsApiPlanetBaseUrl;
 	
 	
+	private static final String ERROR_PLANET_ALREADY_EXISTS = "error.planet.already.exists";
+	private static final String ERROR_GENERIC_MESSAGE = "error.generic.message";
+	private static final String ERROR_PLANET_NOT_FOUND = "error.planet.not.found";
+	private static final String ERROR_PLANET_INVALID_DELETE = "error.planet.invalid.delete";
+	private static final String PAGE_SORT_ORDER_ATRIBUTE = "id";
+	
 	/**
 	 * @see br.com.agmg.desafiob2w.starwarsplanet.service.PlanetService#savePlanet(Planet)
 	 */
@@ -48,10 +54,10 @@ public class PlanetServiceImpl extends BaseService implements PlanetService {
 			planetSaved = planetRepository.save(planet);
 		} catch (DataIntegrityViolationException e) {
 			e.printStackTrace();
-			throw new AlreadyExistsException("error.planet.already.exists", e);
+			throw new AlreadyExistsException(ERROR_PLANET_ALREADY_EXISTS, e);
 	    } catch (Exception e) {
 	    	e.printStackTrace();
-			throw new GenericException("error.generic.message", e);
+			throw new GenericException(ERROR_GENERIC_MESSAGE, e);
 		}
 		
 		return planetSaved;
@@ -68,14 +74,14 @@ public class PlanetServiceImpl extends BaseService implements PlanetService {
 			if (planetRepository.existsById(id)) {
 				planetRepository.deleteById(id);
 			} else {
-				throw new NotFoundException("error.planet.not.found");
+				throw new NotFoundException(ERROR_PLANET_NOT_FOUND);
 			}
 		} catch (GenericException e) {
 			e.printStackTrace();
 			throw e;		
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new GenericException("error.planet.invalid.delete", e);
+			throw new GenericException(ERROR_PLANET_INVALID_DELETE, e);
 		}
 	}
 
@@ -94,7 +100,7 @@ public class PlanetServiceImpl extends BaseService implements PlanetService {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new GenericException("error.generic.message", e);
+			throw new GenericException(ERROR_GENERIC_MESSAGE, e);
 		}
 		
 		return planets;
@@ -119,7 +125,7 @@ public class PlanetServiceImpl extends BaseService implements PlanetService {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new GenericException("error.generic.message", e);
+			throw new GenericException(ERROR_GENERIC_MESSAGE, e);
 		}
 
 		return planets;
@@ -137,13 +143,13 @@ public class PlanetServiceImpl extends BaseService implements PlanetService {
 			if (queryResult.isPresent()) {
 				planet = getPlanet(queryResult);
 			} else {
-				throw new NotFoundException("error.planet.not.found");
+				throw new NotFoundException(ERROR_PLANET_NOT_FOUND);
 			}
 		} catch (GenericException e) {
 			throw e;
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new GenericException("error.generic.message", e);
+			throw new GenericException(ERROR_GENERIC_MESSAGE, e);
 		}
 		
 		return planet;
@@ -162,14 +168,14 @@ public class PlanetServiceImpl extends BaseService implements PlanetService {
 			if (queryResult.isPresent()) {
 				planet = getPlanet(queryResult);
 			} else {
-				throw new NotFoundException("error.planet.not.found");
+				throw new NotFoundException(ERROR_PLANET_NOT_FOUND);
 			}
 		} catch (GenericException e) {
 			e.printStackTrace();
 			throw e;
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new GenericException("error.generic.message");
+			throw new GenericException(ERROR_GENERIC_MESSAGE);
 		}
 		
 		return planet;
@@ -196,7 +202,7 @@ public class PlanetServiceImpl extends BaseService implements PlanetService {
 	private Pageable createOrderedPageRequestById(Integer page, Integer pageSize) {
 		
 		//Diminui 1 da página porque o repositório trata a página inicial como zero
-		return PageRequest.of(page - 1, pageSize, new Sort(Sort.Direction.ASC, "id"));
+		return PageRequest.of(page - 1, pageSize, new Sort(Sort.Direction.ASC, PAGE_SORT_ORDER_ATRIBUTE));
 	}
 	
 	

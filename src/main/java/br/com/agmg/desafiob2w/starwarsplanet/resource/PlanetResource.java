@@ -38,6 +38,9 @@ public class PlanetResource {
 	@Value("${spring.data.rest.default-page-size}")
 	private int defaultPageSize;
 
+	
+	private static final String ERROR_PLANET_NOT_FOUND = "error.planet.not.found";
+	
 	/**
 	 * Cadastra informações de um planeta
 	 * @param planet
@@ -73,7 +76,7 @@ public class PlanetResource {
 		
 		Page<Planet> pageResult = planetService.getAll(page, defaultPageSize);
 		if (pageResult.getContent().size() == 0) {
-			throw new NotFoundException("error.planet.not.found");
+			throw new NotFoundException(ERROR_PLANET_NOT_FOUND);
 		}
 		planets = pageResult.getContent();
 		PlanetsDto planetsDto = new PlanetsDto(planets, request.getRequestURL().toString(), page, pageResult.getTotalPages());
@@ -90,7 +93,7 @@ public class PlanetResource {
 		List<Planet> planets = planetService.getAll();
 		
 		if (planets.size() == 0) {
-			throw new NotFoundException("error.planet.not.found");
+			throw new NotFoundException(ERROR_PLANET_NOT_FOUND);
 		}
 		
 		PlanetsDto planetsDto = new PlanetsDto(planets, request.getRequestURL().toString());
