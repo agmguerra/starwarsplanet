@@ -1,67 +1,76 @@
 **Star Wars Planet**
 ====================
- 
 
-É um projeto desenvolvido como desafio para criar um conjunto de operações 
-(api) que permitam o cadastramento dos planetas mencionados nos filmes 
-Star Wars
 
-**Arquitetura Básica dos Projetos**
+É um projeto desenvolvido como desafio para criar um conjunto de operações (api) que permitam o cadastramento dos planetas mencionados nos filmes Star Wars
+
+
+
+Arquitetura Básica dos Projetos
 -----------------------------------
+
 
 
 ### **Domínio**
 
-As classes do diagrama abaixo representam o modelo de domínio básico definido
-para os projetos
+As classes do diagrama abaixo representam o modelo de domínio básico definido para os projetos.
 
- 
+
+
+
 ![](images/diagrama_classe.png)
+
 
 
 ### **Request Padrão**
 
 
+
 ![](images/request_padrao.svg)
 
--   No projeto starwarsplanet os request seguem o padrão descrito no
-    diagrama acima.
 
 
-No projeto starwarsplanet os controladores são implementados através das
-classes:
+-   No projeto starwarsplanet os request seguem o padrão descrito no diagrama acima.
+
+
+
+### **Controladores**
+
+No projeto starwarsplanet os controladores são implementados através da classe:
+
+
 
 ![](images/controladores.png)
 
+
+
 ### **Services**
 
-Os serviços de negócio são acessados através de interfacces que são
-implementadas seguindo basicamente o exemplo do diagrama abaixo:
+Os serviços de negócio são acessados através de interfaces que são implementadas seguindo basicamente o exemplo do diagrama abaixo:
 
- 
+
+
+
 ![](images/services.png)
 
- 
-No projeto definiu-se uma classe abstrada BaseService.java que
-implementa alguns métodos que são reaproveitados por todos os serviços.
 
- 
+
+No projeto definiu-se uma classe abstrata BaseService.java que implementa alguns métodos que que são reaproveitados por todos os serviços.
+
+
+
 ### **Persistência**
 
- 
-A camada de persistência do projeto foi implementada através
-do Spring Data JPA. As interfaces anotadas com @Repository definem as operações
-necessárias.
+
+A camada de persistência do projeto foi implementada através do Spring Data JPA. As interfaces anotadas com @Repository definem as operações necessárias.
 
  
 
 **Documentação da Api REST.**
 -----------------------------
 
- 
-A documentação (resumida) da api rest implementada pelo projeto
-pode ser consultada após o projeto ser iniciado, através da
-url: http://localhost:8080/swagger-ui.html#/planet-resource
+
+A documentação (resumida) da api rest implementada pelo projeto pode ser consultada após o projeto ser iniciado, através da url: http://localhost:8080/swagger-ui.html#/planet-resource
 
  
 
@@ -69,12 +78,11 @@ url: http://localhost:8080/swagger-ui.html#/planet-resource
 
   
 
+
+
 **Executando os projetos**
 --------------------------
 
-
-
- 
 Para executar os projetos podem ser utilizados os seguintes comandos, após
 baixar o zip do projeto.
 
@@ -88,4 +96,11 @@ baixar o zip do projeto.
 
  
 
- 
+### **Carga no Banco de Dados**
+
+ A carga no banco de dados na inicialização do projeto é realizada com a execução do arquivo import.sql.
+
+```sql
+INSERT INTO PLANET(ID, NAME, CLIMATE, TERRAIN) VALUES(3, 'PLANETA 3', 'CLIMATE 3', 'TERRAIN 3');
+```
+
