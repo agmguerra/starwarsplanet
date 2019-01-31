@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,6 +34,9 @@ public class PlanetResource {
 	
 	@Autowired
 	private PlanetService planetService;
+	
+	@Value("${spring.data.rest.default-page-size}")
+	private int defaultPageSize;
 
 	/**
 	 * Cadastra informações de um planeta
@@ -67,12 +71,12 @@ public class PlanetResource {
 		
 		List<Planet> planets = null;
 		
-		Page<Planet> pageResult = planetService.getAll(page - 1, 10);
-		if (page > pageResult.getTotalPages()) {
+		Page<Planet> pageResult = planetService.getAll(page, defaultPageSize);
+		if (pageResult.getContent().size() == 0) {
 			throw new NotFoundException("error.planet.not.found");
 		}
 		planets = pageResult.getContent();
-		PlanetsDto planetsDto = new PlanetsDto(planets, request.getRequestURL().toString(), page, 10);
+		PlanetsDto planetsDto = new PlanetsDto(planets, request.getRequestURL().toString(), page, pageResult.getTotalPages());
 
 		return ResponseEntity.ok(planetsDto);
 	}
@@ -84,6 +88,10 @@ public class PlanetResource {
 	@GetMapping("/api/planets")
 	public ResponseEntity<PlanetsDto> getAllPlanets() { 
 		List<Planet> planets = planetService.getAll();
+		
+		if (planets.size() == 0) {
+			throw new NotFoundException("error.planet.not.found");
+		}
 		
 		PlanetsDto planetsDto = new PlanetsDto(planets, request.getRequestURL().toString());
 				

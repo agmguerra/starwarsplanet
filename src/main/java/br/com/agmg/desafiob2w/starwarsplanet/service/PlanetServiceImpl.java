@@ -92,9 +92,6 @@ public class PlanetServiceImpl extends BaseService implements PlanetService {
 			for (Planet planet : planets) {
 				planet.setNumberOfMovieAppearence(starwarsApiService.getNumberOfFilmAppereance(planet.getName()));
 			}
-		} catch (GenericException e) {
-			e.printStackTrace();
-			throw e;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new GenericException("error.generic.message", e);
@@ -120,9 +117,6 @@ public class PlanetServiceImpl extends BaseService implements PlanetService {
 			for (Planet planet : planets) {
 				planet.setNumberOfMovieAppearence(starwarsApiService.getNumberOfFilmAppereance(planet.getName()));
 			}
-		} catch (GenericException e) {
-			e.printStackTrace();
-			throw e;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new GenericException("error.generic.message", e);
@@ -146,7 +140,6 @@ public class PlanetServiceImpl extends BaseService implements PlanetService {
 				throw new NotFoundException("error.planet.not.found");
 			}
 		} catch (GenericException e) {
-			e.printStackTrace();
 			throw e;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -201,7 +194,9 @@ public class PlanetServiceImpl extends BaseService implements PlanetService {
 	 * @return Pageable
 	 */
 	private Pageable createOrderedPageRequestById(Integer page, Integer pageSize) {
-		return PageRequest.of(page, pageSize, new Sort(Sort.Direction.ASC, "id"));
+		
+		//Diminui 1 da página porque o repositório trata a página inicial como zero
+		return PageRequest.of(page - 1, pageSize, new Sort(Sort.Direction.ASC, "id"));
 	}
 	
 	

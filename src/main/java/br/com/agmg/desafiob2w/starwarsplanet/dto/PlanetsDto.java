@@ -9,6 +9,11 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import br.com.agmg.desafiob2w.starwarsplanet.entity.Planet;
 import br.com.agmg.desafiob2w.starwarsplanet.util.RestUtil;
 
+/**
+ * Dto para retornar a lista de planetas
+ * @author alexgmg
+ *
+ */
 public class PlanetsDto {
 	
 	private Integer count;
@@ -29,12 +34,12 @@ public class PlanetsDto {
 		
 	}
 	
-	public PlanetsDto(List<Planet> planets, String baseUrl, Integer page, Integer size) {
+	public PlanetsDto(List<Planet> planets, String baseUrl, Integer page, Integer totalPages) {
 		
 		this.count = planets.size();		
 		this.planets = planets.stream().map(planet -> new PlanetDto(planet, baseUrl + "/" + planet.getId())).collect(Collectors.toList());
 		this.previus = baseUrl + "?page=" + RestUtil.getPreviusPage(page);
-		this.next = baseUrl + "?page=" + RestUtil.getNextPage(page, size, count);
+		this.next = baseUrl + "?page=" + RestUtil.getNextPage(page, totalPages);
 		
 	}
 

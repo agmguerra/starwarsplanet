@@ -26,7 +26,7 @@ public class RestUtil {
     * @return
     */
    public static Integer getPreviusPage(Integer actualPage) {
-	   return (actualPage - 1 >= 0 ? actualPage - 1 : 1);
+	   return (actualPage - 1 <= 0 ? 1 : actualPage - 1);
    }
    
    /**
@@ -36,12 +36,16 @@ public class RestUtil {
     * @param count
     * @return
     */
-   public static Integer getNextPage(Integer actualPage, Integer size, Integer count) {
-	   int maxPage = count / size;
-	   if (count % size > 0) {
-		   maxPage++;
-	   } 
-	   return (actualPage + 1 < maxPage ? maxPage + 1 : maxPage);
+   public static Integer getNextPage(Integer actualPage, Integer totalPages) {
+	   
+	   Integer next = null;
+       if (actualPage + 1 > totalPages) {
+		   next = totalPages;
+	   } else {
+		   next = actualPage + 1;
+	   }
+	     
+	   return next;
 	   
    }
    

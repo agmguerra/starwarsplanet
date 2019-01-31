@@ -1,4 +1,8 @@
+
 spring:
+  data:
+    rest:
+       default-page-size: 3
   datasource:
     type: com.zaxxer.hikari.HikariDataSource 
     jdbcUrl: jdbc:h2:file:./src/main/resources/h2/db;DB_CLOSE_ON_EXIT=FALSE

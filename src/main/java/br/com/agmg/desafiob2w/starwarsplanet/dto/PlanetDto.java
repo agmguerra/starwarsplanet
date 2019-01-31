@@ -39,7 +39,11 @@ public class PlanetDto {
 	 */
 	private String url;
 	
-	
+	/**
+	 * Construtor 
+	 * @param planet
+	 * @param url
+	 */
 	public PlanetDto(Planet planet, String url) {
 		this.id = planet.getId();
 		this.name = planet.getName();
@@ -49,7 +53,7 @@ public class PlanetDto {
 		this.url = url;
 	}
 	
-
+	
 	public Long getId() {
 		return id;
 	}

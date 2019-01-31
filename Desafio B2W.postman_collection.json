@@ -1,0 +1,138 @@
+{
+	"info": {
+		"_postman_id": "12bbda48-ba40-436a-b917-c7351ba4e7bf",
+		"name": "Desafio B2W",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "obtem todos os planetas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/api/planets",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"planets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "todos os planetas com paginacao",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/api/planets?page=1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"planets"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get de um planeta",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/api/planets/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"planets",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Exclui um planeta",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:8080/api/planets/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"planets",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Inclui um planeta",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"name\": \"Planeta D\",\n   \"climate\": \"Climate D\",\n   \"terrain\": \"Terrain D\"\n}"
+				},
+				"url": {
+					"raw": "localhost:8080/api/planets",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"planets"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
