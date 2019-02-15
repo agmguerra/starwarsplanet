@@ -7,6 +7,7 @@ import java.util.Map;
 import org.boon.json.JsonFactory;
 import org.boon.json.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -30,10 +31,12 @@ public class StarwarsApiServiceImpl extends BaseService implements StarwarsApiSe
 	 */
 	@Override
 	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@Cacheable("planets")
 	public Integer getNumberOfFilmAppereance(String planetName) {
 		int numberOfFilms = 0;
 		
 		try {
+
 			StringBuffer url = new StringBuffer(starWarsApiPlanetBaseUrl).append("?search=").append(planetName.replace(' ', '+'));
 			URI starWarsApiUri = new URI(url.toString());
 			

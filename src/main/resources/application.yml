@@ -17,6 +17,9 @@ spring:
            useServerPrepStmts: true
   jpa:
     show-sql: true
+  cache:
+    jcache:
+      config: classpath:ehcache.xml
   starwarsapiplanet: https://swapi.co/api/planets/
     
         

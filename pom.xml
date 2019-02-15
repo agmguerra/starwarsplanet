@@ -77,6 +77,23 @@
 		    <artifactId>httpcore</artifactId>
 		</dependency>		
 			
+		<!-- Cache dependencies -->
+		<dependency>
+	      	<groupId>org.ehcache</groupId>
+	      	<artifactId>ehcache</artifactId>
+	      	<version>3.6.1</version>
+    	</dependency>     
+		<dependency>
+            <groupId>javax.cache</groupId>
+            <artifactId>cache-api</artifactId>
+		</dependency>
+		<!-- spring boot cache starter--> 
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
+		<!-- end -->
+		
 		<!-- Incluir suporte ao Actuator para minitorar os serviços -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -102,8 +119,7 @@
 			<version>2.4.0</version>
 		</dependency>
 		<!-- End -->
-		
-		
+			
 	</dependencies>
 
 	<build>
